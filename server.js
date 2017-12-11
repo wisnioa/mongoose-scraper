@@ -53,8 +53,9 @@ mongoose.connect("mongodb://heroku_vcg35hd8:g0v03vi9gparrg8jpfg4kv1p0q@ds135926.
 // Routes
 
 app.get('/', function(req,res){
+
   console.log("hitting app.get at root");
-  res.render('index');
+  res.redirect("/scrape");
 });
 
 // A GET route for scraping the echojs website
@@ -82,14 +83,16 @@ app.get("/scrape", function(req, res) {
       // Create a new Article using the `result` object built from scraping
       db.Article
         .create(result)
-        .then(function(dbArticle) {
-          // If we were able to successfully scrape and save an Article, send a message to the client
-          res.send("Scrape Complete");
-        })
+
         .catch(function(err) {
           // If an error occurred, send it to the client
           res.json(err);
-        });
+        })
+        .then(function(dbArticle) {
+          // If we were able to successfully scrape and save an Article, send a message to the client
+          return res.render("index",{ scrapedArticles: dbArticle});
+        })
+        
     });
   });
 });
@@ -104,7 +107,7 @@ app.get("/articles", function(req, res) {
     .find({})
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
-      res.json(dbArticle);
+      res.render("index", {scrapedArticles: dbArticle});
     })
     .catch(function(err) {
       // If an error occurred, send it to the client
