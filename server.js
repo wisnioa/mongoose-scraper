@@ -11,17 +11,13 @@ var exphbs = require("express-handlebars");
 var axios = require("axios");
 var cheerio = require("cheerio");
 
-// Require all models
+
 var db = require("./models");
 
 var PORT = 3000;
 
-// Initialize Express
+
 var app = express();
-
-// Configure middleware
-
-
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
@@ -38,27 +34,42 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-//UNCOMMENT BELOW WHEN READY to use the PRODUCTION ENVIRONMENT ->> HEROKU, >> ie. NOT the DEV Environment
-//var MONGODB_URI: "mongodb://heroku_vcg35hd8:g0v03vi9gparrg8jpfg4kv1p0q@ds135926.mlab.com:35926/heroku_vcg35hd8";
+
 
 
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
-mongoose.Promise = Promise;
-mongoose.connect("mongodb://heroku_vcg35hd8:g0v03vi9gparrg8jpfg4kv1p0q@ds135926.mlab.com:35926/heroku_vcg35hd8" || "mongodb://localhost/mongoose-scraper",{
+// mongoose.Promise = Promise;
+// mongoose.connect("mongodb://heroku_vcg35hd8:g0v03vi9gparrg8jpfg4kv1p0q@ds135926.mlab.com:35926/heroku_vcg35hd8" || "mongodb://localhost/mongoose-scraper",{
   
-  useMongoClient: true
+//   useMongoClient: true
+// });
+
+mongoose.Promise = Promise;
+var mongoDB = process.env.MONGODB_URI || "mongodb://localhost/mongoose-scraper";
+mongoose.connect(mongoDB, function(error) {
+    if (error) throw error;
+    useMongoClient: true;
+    console.log("Mongoose connection is successful!!")
+
 });
 
-// Routes
+
+
+// ROUTES
+
+//THIS IS THE INITAL GET ROUTE FOR RENDERING ALL ARTICLES ON THE PAGE
 
 app.get('/', function(req,res){
 
   console.log("hitting app.get at root");
-  res.redirect("/scrape");
+  res.redirect("/articles");
+  
 });
 
-// A GET route for scraping the echojs website
+
+
+// A GET SCRAPING THE ONION WEBSITE
 app.get("/scrape", function(req, res) {
 
   console.log("Scraped website");
@@ -80,17 +91,16 @@ app.get("/scrape", function(req, res) {
        .children("a")
         .attr("href");
 
-      // Create a new Article using the `result` object built from scraping
+   
       db.Article
         .create(result)
-
+        .then(function(dbArticle) {
+            // If we were able to successfully scrape and save an Article, send a message to the client
+            return res.render("index",{ scrapedArticles: dbArticle});
+        })
         .catch(function(err) {
           // If an error occurred, send it to the client
           res.json(err);
-        })
-        .then(function(dbArticle) {
-          // If we were able to successfully scrape and save an Article, send a message to the client
-          return res.render("index",{ scrapedArticles: dbArticle});
         })
         
     });
@@ -98,7 +108,7 @@ app.get("/scrape", function(req, res) {
 });
 
 
-
+//ROUTE FOR GETTING ALL ARTICLES AND DISPLAYING ON PAGE
 app.get("/articles", function(req, res) {
 
   console.log("Hitting app.get /articles route");
@@ -115,8 +125,8 @@ app.get("/articles", function(req, res) {
     });
 });
 
-//THIS IS THE ROUTE FOR GETTING THE ARTICLE BY ID AND RENDERING TO SAVED PAGE
-// Route for grabbing a specific Article by id, populate it with its note
+
+
 app.get("/articles/:id", function(req, res) {
   console.log("Hit app.get /articles/:id route");
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
@@ -133,6 +143,23 @@ app.get("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+
+
+app.get('/savedarticles', function(req,res){
+
+  console.log("saved articles get route is working");
+  db.Article
+  .find({})
+  .then(function(dbSaved) {
+    // If we were able to successfully find Articles, send them back to the client
+    res.render("saved", {savedArticles: dbSaved});
+  })
+  .catch(function(err) {
+    // If an error occurred, send it to the client
+    res.json(err);
+  });
+});
+
 
 
 app.post("/savedarticles", function(req, res) {
