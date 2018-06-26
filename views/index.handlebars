@@ -2,14 +2,16 @@
 
 <div id = "articles">
 {{#each scrapedArticles}}
-            <div class="card small">
-                <p>Title: {{this.title}}</p>
-                <p>Link: {{this.link}}</p>
-                <p>Note: {{this.note}}</p>
+            <div class="card horizontal">
+                <div class="card-content">
+                <p id="title">Title: {{this.title}}</p>
+                <p id="link">Link: {{this.link}}</p>
+                <p id="note">Note: {{this.note}}</p>
                 <br>
                 <br>
                 <button id="makeNote">Write a Note</button>
                 <button id="saveBtn">Save Article</button>
+                </div>
              </div>
 {{/each}}
 </div>
