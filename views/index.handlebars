@@ -1,17 +1,23 @@
 <div id="articles">
     {{#each scrapedArticles}}
-    <div class="col s12 m7">
-        <div class="card horizontal">
-            <div class="card-content">
-                 {{this.title}}
+    <div class="col s12">
+        <div class="hoverable card panel">
+
+            <div class="articleCard card-content">
+                         
+                {{this.title}}
                 <a id="link" target="_blank" href={{this.link}}></a>
-                <p id="note">Note: {{this.note}}</p>
+                <p id="note">{{this.note}}</p>
                 <br>
                 <br>
-                <button id="makeNote">Write a Note</button>
-                <button id="saveBtn">Save Article</button>
+                 <a class="saveArticleBtn orange darken-4 btn"><i class="material-icons left">save</i>Save Article</a>
+                 <a class="writeNoteBtn orange darken-4 btn"><i class="material-icons left">edit</i>Write Note</a>
+
+                {{!-- <button id="makeNote">Write a Note</button> --}}
+                {{!-- <button id="saveBtn">Save Article</button> --}}
             </div>
         </div>
     </div>
+
     {{/each}}
 </div>

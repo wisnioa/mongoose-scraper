@@ -17,9 +17,7 @@ h2, p {
     text-align: center;
 }
 
-#title {
-    background: orangered;
-}
+
 
 .overlay {
     
@@ -28,4 +26,18 @@ h2, p {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.articleCard {
+    margin: auto;
+ 
+}
+
+#note {
+    padding-bottom: 80px;
+}
+
+.saveArticleBtn, .writeNoteBtn {
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -7,20 +7,37 @@
   <title>The Onion Scraper</title>
   <link rel="stylesheet" href="../public/../css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
+
+<nav class="orange">
+  <div class="nav-wrapper">
+    <ul class="left hide-on-med-and-down">
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/saved">Saved Articles</a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
 <section class="orange valign-wrapper">
   <div class="container valign-fixed">
+
     <div class="row">
       <div class="col l12">
+
         <h2 class="center-align white-text">Scrapin' The Onion</h2>
         <p style="bold" class="center-align flow-text">See recently scraped articles....it's grate!</p>
-        <img id="onionImg" src="../public/../img/onions.png" height="300px" width="350px" alt="onion cartoon image">
+        <img id="onionImg" src="../public/../img/onions.png" height="300px" width="350px" alt="onion image">
         <div class="overlay">
-          
+
           <div class="row">
-            
-            <a class="waves-effect waves-light btn">Scrape the onion!</a>
+
+            <a class="waves-effect waves-light btn pulse">Scrape the onion!</a>
           </div>
         </div>
       </div>
@@ -28,10 +45,13 @@
   </div>
 </section>
 
-<body>
-  {{{body}}}
 
-</body>
+  <body class="teal">
+    <div class="row">
+    {{{body}}}
+  </div>
+  </body>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="app.js"></script>
 </body>
