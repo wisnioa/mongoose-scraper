@@ -29,6 +29,7 @@ h2, p {
 }
 
 .articleCard {
+    
     margin: auto;
  
 }
@@ -37,7 +38,6 @@ h2, p {
     padding-bottom: 80px;
 }
 
-.saveArticleBtn, .writeNoteBtn {
-    margin-left: auto;
-    margin-right: auto;
+#bttnRow {
+    margin:auto;
 }
